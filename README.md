@@ -273,9 +273,9 @@ To simulate real-world data heterogeneity:
 
 Client Distribution:
 
-*Client 1: 1389 samples
-*Client 2: 4599 samples
-*Client 3: 3220 samples
+* Client 1: 1389 samples
+* Client 2: 4599 samples
+* Client 3: 3220 samples
 
 ### 🔹 2. Client-side Training
 

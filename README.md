@@ -201,8 +201,102 @@ This implementation uses **Centralized Learning** for model training.
 This part of the project implements **Federated Learning** on a pre-trained Attention U-Net model for multi-organ segmentation using CT scan data.
 
 ---
+Centralized Training (Baseline)
+🔹 Model Architecture
+Attention U-Net for multi-organ segmentation
+Input: 1-channel CT slice
+Output: 5-class segmentation mask
+🔹 Training Configuration
+Loss: Dice + BCE Loss
+Optimizer: AdamW
+Mixed Precision: Enabled (AMP)
+Scheduler: Cosine Annealing
+Training: Full dataset (no partitioning)
+📊 Centralized Performance
+Mean Dice Score: 0.9069
 
+Per-organ Dice:
 
+Liver → 0.9205
+Spleen → 0.9249
+Left Kidney → 0.8302
+Right Kidney → 0.9329
+Pancreas → 0.9263
+🎯 Observation
+High accuracy due to full data access
+Serves as upper-bound benchmark
+🌐 Federated Learning (FedAvg)
+🔹 Client Simulation
+3 clients with non-IID data (Dirichlet α = 2.0)
+
+Client distribution:
+
+Client 1 → 1267 samples
+Client 2 → 3248 samples
+Client 3 → 4693 samples
+🔹 Training Setup
+Model initialized from centralized weights
+Rounds: 15
+Local epochs: 1
+Aggregation: FedAvg
+📊 Federated Performance
+Mean Dice: ~0.81 – 0.82
+⚠️ Observation
+Performance drop due to:
+Data heterogeneity
+Client drift
+Limited local data
+🚀 FedGDA (Proposed Method)
+💡 Motivation
+
+Standard FedAvg does not handle distribution mismatch across clients.
+FedGDA introduces server-guided data alignment to improve performance.
+
+🔹 Core Idea
+
+Instead of ignoring client differences,
+the server helps clients adapt their data distributions
+
+🔹 Step 1: Client Statistics
+
+Each client computes:
+
+Mean intensity
+Standard deviation
+🔹 Step 2: Server Aggregation
+
+Server computes:
+
+Global mean
+Global standard deviation
+🔹 Step 3: Data Alignment
+Applied inside dataset (__getitem__)
+Images adjusted using global statistics
+🔹 Key Enhancement: Alpha Blending
+Prevents over-normalization
+Controls strength of transformation
+
+Balances:
+
+🌍 Global alignment
+🧩 Local feature preservation
+📊 Final Results
+Method	Mean Dice
+Centralized	0.9069
+FedAvg	~0.8165
+FedGDA	0.8467
+🎯 Key Observations
+🚀 FedGDA improves performance by ~3–4% over FedAvg
+🔻 Reduces gap between centralized and federated models
+💪 Strong performance for large organs (liver, pancreas)
+⚠️ Slight drop for smaller organs (e.g., spleen)
+🧠 Summary
+
+This project evolves through:
+
+🧠 Centralized Learning → High performance baseline
+🌐 Federated Learning (FedAvg) → Real-world simulation with performance drop
+🚀 FedGDA → Improved federated learning using server-guided augmentation
 
 
 

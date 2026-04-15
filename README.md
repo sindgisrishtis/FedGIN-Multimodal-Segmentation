@@ -203,46 +203,46 @@ This part of the project implements **Federated Learning** on a pre-trained Atte
 ---
 
 **🧠 Centralized Training (Baseline)**
-🔹 Model Architecture
-Model Used: **Attention U-Net**
-Task: Multi-organ segmentation
-Input: 1-channel CT slice
-Output: 5-class segmentation mask
+###🔹 Model Architecture
+* Model Used: **Attention U-Net**
+* Task: Multi-organ segmentation
+* Input: 1-channel CT slice
+* Output: 5-class segmentation mask
 
 **🔹 Training Configuration**
-Loss Function: Dice + BCE Loss
-Optimizer: AdamW
-Mixed Precision: Enabled (AMP)
-Scheduler: Cosine Annealing
-Training Strategy: Full dataset (no partitioning)
+* Loss Function: Dice + BCE Loss
+* Optimizer: AdamW
+* Mixed Precision: Enabled (AMP)
+* Scheduler: Cosine Annealing
+* Training Strategy: Full dataset (no partitioning)
 
 **📊 Centralized Performance**
-Mean Dice Score: 0.9069
-Per-Organ Performance
-Liver: 0.9205
-Spleen: 0.9249
-Left Kidney: 0.8302
-Right Kidney: 0.9329
-Pancreas: 0.9263
+* Mean Dice Score: 0.9069
+* Per-Organ Performance
+* Liver: 0.9205
+* Spleen: 0.9249
+* Left Kidney: 0.8302
+* Right Kidney: 0.9329
+* Pancreas: 0.9263
 
 **🎯 Observation**
-High segmentation accuracy due to full data access
-Serves as an upper-bound benchmark
+* High segmentation accuracy due to full data access
+* Serves as an upper-bound benchmark
 
 **🌐 Federated Learning (FedAvg)**
 🔹 Client Simulation
-Dataset split into 3 clients
-Non-IID distribution using Dirichlet (α = 2.0)
+* Dataset split into 3 clients
+* Non-IID distribution using Dirichlet (α = 2.0)
 **Client Distribution
 Client 1: 1267 samples
 Client 2: 3248 samples
 Client 3: 4693 samples**
 
 **🔹 Training Setup**
-Model: Attention U-Net (initialized from centralized model)
-Communication Rounds: 15
-Local Epochs: 1
-Aggregation Method: Federated Averaging (FedAvg)
+* Model: Attention U-Net (initialized from centralized model)
+* Communication Rounds: 15
+* Local Epochs: 1
+*Aggregation Method: Federated Averaging (FedAvg)
 
 **📊 Federated Performance (FedAvg)**
 Mean Dice Score: ~0.8165
